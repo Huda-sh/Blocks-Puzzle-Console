@@ -36,14 +36,15 @@ namespace BlocksConsole
                         break;
                     case MainMenuChoice.DFS:
                         GameLoader loader = new GameLoader();
-                        Game game = loader.ImportGame("field.json");
-                        Game Solution = (new PuzzleSolver()).Solve(game);
+                        Game game = loader.ImportGame("field1.json");
+                        Game Solution = (new DFS()).Solve(game);
                         if (Solution == null)
                         {
                             Console.WriteLine("No Solution found");
                         }
                         else
                         {
+                            Console.WriteLine("Solution!!");
                             var display = new Display();
                             display.Board(Solution, false);
                         }

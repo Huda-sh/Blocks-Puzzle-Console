@@ -13,7 +13,7 @@ namespace BlocksConsole.GameLogic.models
         public GameBoard Board { get; set; }
         public List<Piece> AvailablePieces { get; set; }
         public List<Piece> PlacedPieces { get; set; }
-
+        public Game() { }
         public Game(GameBoard board, List<Piece> pieces)
         {
             Board = board;
@@ -28,6 +28,11 @@ namespace BlocksConsole.GameLogic.models
                 return false;
             }
             Piece piece = AvailablePieces[index];
+            return CheckAllowedCoordinates(position, piece);
+        }
+
+        public bool CheckAllowedCoordinates(Position position, Piece piece)
+        {
             return ParentState == null
                 ? Board.CanPlacePiece(piece, position)
                 : ParentState.Board.CanPlacePiece(piece, position);
@@ -71,15 +76,32 @@ namespace BlocksConsole.GameLogic.models
 
         public object Clone()
         {
-            Game cloned_game = new Game(
-                Board = (GameBoard)this.Board.Clone(),
-                this.AvailablePieces.ConvertAll<Piece>(piece => (Piece)piece.Clone())
-            );
+            Game cloned_game = new Game();
+            cloned_game.Board = (GameBoard) this.Board.Clone();
+            cloned_game.AvailablePieces = this.AvailablePieces.ConvertAll<Piece>(piece => (Piece)piece.Clone());
+            
             cloned_game.PlacedPieces = this.PlacedPieces.ConvertAll<Piece>(piece =>
                 (Piece)piece.Clone()
             );
             cloned_game.ParentState = this.ParentState;
             return cloned_game;
+        }
+        public override int GetHashCode()
+        {
+            int PlacedPiecesHash = 17;
+            foreach (var piece in PlacedPieces)
+            {
+                PlacedPiecesHash += 17 * piece.GetHashCode();
+            }
+
+            //int available_pieces_hash = 17;
+            //foreach (var piece in PlacedPieces)
+            //{
+            //    available_pieces_hash += 17 * piece.GetHashCode();
+            //}
+            //int BoardHash = Board.GetHashCode() * 17;
+            return PlacedPiecesHash;
+            //return PlacedPiecesHash + available_pieces_hash + BoardHash;
         }
     }
 }

@@ -18,5 +18,9 @@
         {
             return new Block((Position)RelativePosition.Clone());
         }
+        public override int GetHashCode()
+        {
+            return RelativePosition.GetHashCode() * 17;
+        }
     }
 }

@@ -83,7 +83,29 @@ namespace BlocksConsole.GameLogic.models
 
         public object Clone()
         {
-            return new GameBoard(this.Width, this.Height, initialShape: (GridCell[,])_Grid.Clone());
+            GridCell[,] grid = new GridCell[Height, Width];
+            for (int i = 0; i < Width; i++)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    grid[i, j] = _Grid[i, j];
+                }
+            }
+            return new GameBoard(this.Width, this.Height, initialShape: grid);
+        }
+
+        public override int GetHashCode()
+        {
+            int grid_hash = 7;
+            for (int i = 0; i < Width; i++)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    grid_hash +=  7 * (int) _Grid[i, j];
+                }
+            }
+
+            return grid_hash + Width * 7 + Height * 7;
         }
     }
 }

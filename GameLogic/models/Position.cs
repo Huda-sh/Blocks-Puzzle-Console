@@ -23,7 +23,7 @@
 
         public override int GetHashCode()
         {
-            return X.GetHashCode() ^ Y.GetHashCode();
+            return X * 17 + Y * 17;
         }
 
         public object Clone()

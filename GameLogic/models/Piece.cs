@@ -46,5 +46,15 @@ namespace BlocksConsole.GameLogic.models
             }
             return piece;
         }
+
+        public override int GetHashCode()
+        {
+            int blocks_hash = 17;
+            foreach (var block in Blocks)
+            {
+                blocks_hash += 17 * block.GetHashCode();
+            }
+            return AbsolutePosition.GetHashCode() * 17 + blocks_hash;
+        }
     }
 }
