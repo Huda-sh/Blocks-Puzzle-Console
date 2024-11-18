@@ -11,6 +11,7 @@ namespace BlocksConsole.GUI
         public const string PLAY_GAME = "Play the game";
         public const string BFS = "BFS";
         public const string DFS = "DFS";
+        public const string DFS_REC = "DFS - Recursive";
         public const string QUIT = "Quit the game";
     }
 }

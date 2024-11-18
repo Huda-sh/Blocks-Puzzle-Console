@@ -50,7 +50,40 @@ namespace BlocksConsole.Bots
             }
             return null;
         }
+        public Game? SolveRecursively(Game state)
+        {
+            var visited = new Dictionary<string, bool>();
+            return SolveRecursivelyHelper(state, visited);
+        }
 
+        private Game? SolveRecursivelyHelper(Game currentState, Dictionary<string, bool> visited)
+        {
+            string stateKey = GenerateStateKey(currentState);
+
+            if (currentState.CheckForWinning())
+                return currentState;
+
+            if (visited.ContainsKey(stateKey))
+                return null;
+
+            visited.Add(stateKey, true);
+
+            List<Game> possibleMoves = getPossibleMoves(currentState);
+
+            foreach (var move in possibleMoves)
+            {
+                if (visited.ContainsKey(GenerateStateKey(move)))
+                    continue;
+
+                Game? result = SolveRecursivelyHelper(move, visited);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+
+            return null;
+        }
         private List<Game> getPossibleMoves(Game game)
         {
             List<Game> possible_moves = new List<Game>();

@@ -23,7 +23,7 @@ namespace BlocksConsole
                 new SelectionPrompt<string>()
                     .Title("[green] Choose an option from below:[/]")
                     .PageSize(10)
-                    .AddChoices(new[] { MainMenuChoice.PLAY_GAME, MainMenuChoice.BFS, MainMenuChoice.DFS, MainMenuChoice.QUIT })
+                    .AddChoices(new[] { MainMenuChoice.PLAY_GAME, MainMenuChoice.BFS, MainMenuChoice.DFS, MainMenuChoice.DFS_REC, MainMenuChoice.QUIT })
             );
 
                 switch (option)
@@ -47,6 +47,23 @@ namespace BlocksConsole
                             Console.WriteLine("Solution!!");
                             var display = new Display();
                             display.Board(Solution, false);
+                        }
+                        Console.ReadLine();
+
+                        break;
+                    case MainMenuChoice.DFS_REC:
+                        GameLoader loader2 = new GameLoader();
+                        Game game2 = loader2.ImportGame("field1.json");
+                        Game Solution2 = (new DFS()).SolveRecursively(game2);
+                        if (Solution2 == null)
+                        {
+                            Console.WriteLine("No Solution found");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Solution!!");
+                            var display = new Display();
+                            display.Board(Solution2, false);
                         }
                         Console.ReadLine();
 
