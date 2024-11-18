@@ -73,7 +73,28 @@ namespace BlocksConsole.GameLogic.models
         {
             return AvailablePieces.Count == 0;
         }
-
+        public List<Game> getPossibleMoves()
+        {
+            List<Game> possible_moves = new List<Game>();
+            Piece piece = this.AvailablePieces[0];
+            for (int x = 0; x < this.Board.Width; x++)
+            {
+                for (int y = 0; y < this.Board.Height; y++)
+                {
+                    if (this.Board.CanPlacePiece(this.AvailablePieces[0], new Position(x, y)))
+                    {
+                        Game state = (Game)this.Clone();
+                        state.ParentState = this;
+                        state.Board.PlacePiece(state.AvailablePieces[0], new Position(x, y));
+                        state.AvailablePieces[0].SetAbsolutePosition(new Position(x, y));
+                        state.PlacedPieces.Add(state.AvailablePieces[0]);
+                        state.AvailablePieces.RemoveAt(0);
+                        possible_moves.Add(state);
+                    }
+                }
+            }
+            return possible_moves;
+        }
         public object Clone()
         {
             Game cloned_game = new Game();

@@ -10,8 +10,6 @@ namespace BlocksConsole.Bots
             return SolveWithStack(initialState);
         }
 
-        bool placed_piece = false;
-
         public Game? SolveWithStack(Game state)
         {
             var visited = new Dictionary<string, bool>();
@@ -29,7 +27,7 @@ namespace BlocksConsole.Bots
 
                 visited.Add(GenerateStateKey(currentState), true);
 
-                List<Game> possible_moves = getPossibleMoves(currentState);
+                List<Game> possible_moves = currentState.getPossibleMoves();
                 foreach (var move in possible_moves)
                 {
                     if (visited.Count > 0 && visited.ContainsKey(GenerateStateKey(move)))
@@ -68,7 +66,7 @@ namespace BlocksConsole.Bots
 
             visited.Add(stateKey, true);
 
-            List<Game> possibleMoves = getPossibleMoves(currentState);
+            List<Game> possibleMoves = currentState.getPossibleMoves();
 
             foreach (var move in possibleMoves)
             {
@@ -84,28 +82,7 @@ namespace BlocksConsole.Bots
 
             return null;
         }
-        private List<Game> getPossibleMoves(Game game)
-        {
-            List<Game> possible_moves = new List<Game>();
-            Piece piece = game.AvailablePieces[0];
-            for (int x = 0; x < game.Board.Width; x++)
-            {
-                for (int y = 0; y < game.Board.Height; y++)
-                {
-                    if (game.Board.CanPlacePiece(game.AvailablePieces[0], new Position(x, y)))
-                    {
-                        Game state = (Game)game.Clone();
-                        state.ParentState = game;
-                        state.Board.PlacePiece(state.AvailablePieces[0], new Position(x, y));
-                        state.AvailablePieces[0].SetAbsolutePosition(new Position(x, y));
-                        state.PlacedPieces.Add(state.AvailablePieces[0]);
-                        state.AvailablePieces.RemoveAt(0);
-                        possible_moves.Add(state);
-                    }
-                }
-            }
-            return possible_moves;
-        }
+        
 
         private string GenerateStateKey(Game game)
         {
