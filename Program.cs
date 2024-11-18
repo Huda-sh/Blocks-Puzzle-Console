@@ -32,7 +32,20 @@ namespace BlocksConsole
                         startGame();
                         break;
                     case MainMenuChoice.BFS:
-
+                        GameLoader bfs_loader = new GameLoader();
+                        Game bfs_game = bfs_loader.ImportGame("field.json");
+                        Game bfs_Solution = (new BFS()).Solve(bfs_game);
+                        if (bfs_Solution == null)
+                        {
+                            Console.WriteLine("No Solution found");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Solution!!");
+                            var display = new Display();
+                            display.Board(bfs_Solution, false);
+                        }
+                        Console.ReadLine();
                         break;
                     case MainMenuChoice.DFS:
                         GameLoader loader = new GameLoader();
